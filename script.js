@@ -1,68 +1,91 @@
 const root = document.documentElement;
-const scene = document.querySelector(".scene");
-const tree = document.querySelector(".tree");
-let raf = null;
-let targetX = 0.5;
-let targetY = 0.5;
+const scene = document.querySelector(".grove");
+const tree = document.querySelector(".grove__tree");
 
-const updateCSSVars = () => {
-  root.style.setProperty("--cursor-x", targetX.toFixed(4));
-  root.style.setProperty("--cursor-y", targetY.toFixed(4));
-  raf = null;
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const setProperties = ({
+  xPercent = 50,
+  yPercent = 50,
+  strength = 0.35,
+  tiltX = 0,
+  tiltY = 0,
+  cloudShift = 0,
+} = {}) => {
+  root.style.setProperty("--pointer-x", xPercent.toFixed(2));
+  root.style.setProperty("--pointer-y", yPercent.toFixed(2));
+  root.style.setProperty("--pointer-strength", strength.toFixed(3));
+  root.style.setProperty("--tree-tilt-x", `${tiltX.toFixed(2)}deg`);
+  root.style.setProperty("--tree-tilt-y", `${tiltY.toFixed(2)}deg`);
+  root.style.setProperty("--cloud-shift", `${cloudShift.toFixed(2)}px`);
 };
 
-const requestUpdate = () => {
-  if (raf !== null) return;
-  raf = requestAnimationFrame(updateCSSVars);
+const defaultProps = {
+  xPercent: 50,
+  yPercent: 50,
+  strength: 0.35,
+  tiltX: 0,
+  tiltY: 0,
+  cloudShift: 0,
 };
 
-const setFromEvent = (event) => {
-  const bounds = scene.getBoundingClientRect();
-  const point = event.touches ? event.touches[0] : event;
+const updateFromPoint = (clientX, clientY) => {
+  if (!scene || !tree) return;
 
-  const x = (point.clientX - bounds.left) / bounds.width;
-  const y = (point.clientY - bounds.top) / bounds.height;
+  const sceneRect = scene.getBoundingClientRect();
+  const treeRect = tree.getBoundingClientRect();
 
-  targetX = Math.min(Math.max(x, 0), 1);
-  targetY = Math.min(Math.max(y, 0), 1);
-  requestUpdate();
+  const relativeX = clamp((clientX - sceneRect.left) / sceneRect.width, 0, 1);
+  const relativeY = clamp((clientY - sceneRect.top) / sceneRect.height, 0, 1);
+
+  const treeCenterX = treeRect.left + treeRect.width / 2;
+  const treeCenterY = treeRect.top + treeRect.height / 2;
+  const distanceX = clientX - treeCenterX;
+  const distanceY = clientY - treeCenterY;
+  const distance = Math.hypot(distanceX, distanceY);
+  const maxRadius = Math.max(treeRect.width, treeRect.height) * 0.7;
+  const strength = clamp(1 - distance / maxRadius, 0.1, 1);
+
+  const tiltX = (relativeX - 0.5) * 10;
+  const tiltY = (0.5 - relativeY) * 8;
+  const cloudShift = (relativeX - 0.5) * 60;
+
+  setProperties({
+    xPercent: relativeX * 100,
+    yPercent: relativeY * 100,
+    strength,
+    tiltX,
+    tiltY,
+    cloudShift,
+  });
 };
 
-scene.addEventListener("pointermove", setFromEvent);
-scene.addEventListener("pointerdown", setFromEvent);
-scene.addEventListener("touchmove", (event) => {
-  setFromEvent(event);
-  event.preventDefault();
-});
+const resetScene = () => {
+  setProperties(defaultProps);
+};
 
-scene.addEventListener("pointerleave", () => {
-  targetX = 0.5;
-  targetY = 0.5;
-  requestUpdate();
-  scene.classList.remove("tree-off");
-});
-
-window.addEventListener("resize", requestUpdate);
-
-requestUpdate();
-
-if (tree) {
-  tree.addEventListener("pointerenter", () => {
-    scene.classList.add("tree-off");
+if (scene) {
+  scene.addEventListener("pointermove", (event) => {
+    updateFromPoint(event.clientX, event.clientY);
   });
 
-  tree.addEventListener("pointerleave", () => {
-    scene.classList.remove("tree-off");
+  scene.addEventListener("pointerdown", (event) => {
+    updateFromPoint(event.clientX, event.clientY);
   });
 
-  tree.addEventListener("touchstart", () => {
-    scene.classList.add("tree-off");
+  scene.addEventListener("pointerleave", () => {
+    resetScene();
   });
 
-  const endTouch = () => {
-    scene.classList.remove("tree-off");
-  };
+  scene.addEventListener("touchmove", (event) => {
+    if (event.touches.length === 0) return;
+    const touch = event.touches[0];
+    updateFromPoint(touch.clientX, touch.clientY);
+  });
 
-  tree.addEventListener("touchend", endTouch);
-  tree.addEventListener("touchcancel", endTouch);
+  scene.addEventListener("touchend", () => {
+    resetScene();
+  });
 }
+
+resetScene();

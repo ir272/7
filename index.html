@@ -2,55 +2,77 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive Tree Landscape</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Whispering Tree Grove</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Quicksand:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="page">
-      <header class="hero">
-        <h1>Whispering Tree</h1>
-        <p>Move your cursor to wake the forest.</p>
-      </header>
-      <main class="scene" aria-label="A stylized tree that reacts to cursor movement">
-        <div class="sky"></div>
-        <div class="cloud cloud-1" aria-hidden="true"></div>
-        <div class="cloud cloud-2" aria-hidden="true"></div>
-        <div class="cloud cloud-3" aria-hidden="true"></div>
-        <div class="glow"></div>
-        <div class="tree" role="img" aria-hidden="true">
-          <div class="trunk"></div>
-          <div class="branch branch-left"></div>
-          <div class="branch branch-right"></div>
-          <div class="canopy"></div>
-          <div class="fruit fruit-1"></div>
-          <div class="fruit fruit-2"></div>
-          <div class="fruit fruit-3"></div>
-        </div>
-        <div class="tree-shadow" aria-hidden="true"></div>
-        <div class="ground"></div>
-      </main>
-      <section class="copy">
-        <h2>The story</h2>
+      <header class="intro">
+        <h1>Whispering Tree Grove</h1>
         <p>
-          This enchanted tree now floats gently above the meadow, tipping toward
-          the light as it follows every movement. Hover near its branches to see
-          the leaves twirl, or linger at the roots to watch the glow settle into
-          twilight.
+          A floating tree responds to every whisper of your cursor. Move around
+          the grove to sway the branches, spark the glow, and send the clouds
+          drifting in new directions.
+        </p>
+      </header>
+
+      <main
+        class="grove"
+        aria-label="A stylized floating tree scene that reacts to pointer movement"
+      >
+        <div class="grove__sky" aria-hidden="true">
+          <div class="grove__sun"></div>
+          <div class="cloud cloud--1"></div>
+          <div class="cloud cloud--2"></div>
+          <div class="cloud cloud--3"></div>
+        </div>
+
+        <div class="grove__ground" aria-hidden="true"></div>
+
+        <div class="grove__tree" aria-hidden="true">
+          <div class="tree__shadow"></div>
+          <div class="tree__trunk"></div>
+          <div class="tree__branch tree__branch--left"></div>
+          <div class="tree__branch tree__branch--right"></div>
+          <div class="tree__canopy"></div>
+          <div class="tree__fruit tree__fruit--one"></div>
+          <div class="tree__fruit tree__fruit--two"></div>
+          <div class="tree__fruit tree__fruit--three"></div>
+          <div class="tree__sparkles"></div>
+        </div>
+
+        <div class="grove__fireflies" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </main>
+
+      <section class="details">
+        <h2>How it works</h2>
+        <p>
+          Hover anywhere in the grove to shift the focus of the light. As you
+          near the canopy, the leaves glow brighter and the fruit shimmer. Glide
+          past the roots to calm the tree and let the lights fade to twilight.
         </p>
         <p>
-          Crafted with pure HTML, CSS, and JavaScript, the illustration reacts in
-          real time to your pointer, blending gradients and subtle transforms to
-          create a serene, living scene.
+          Everything is drawn with HTML and CSS, while a sprinkle of JavaScript
+          keeps track of your pointer position. The custom properties that power
+          the animation also adapt to touch events, so you can explore the scene
+          on any device.
         </p>
       </section>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
