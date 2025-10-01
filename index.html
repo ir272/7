@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Whispering Tree Grove</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Quicksand:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1 class="visually-hidden">Whispering Tree Grove</h1>
+    <main
+      class="grove"
+      aria-label="A stylized floating tree scene that reacts to pointer movement"
+    >
+      <div class="grove__sky" aria-hidden="true">
+        <div class="grove__sun"></div>
+        <div class="cloud cloud--1"></div>
+        <div class="cloud cloud--2"></div>
+        <div class="cloud cloud--3"></div>
+      </div>
+
+      <div class="grove__ground" aria-hidden="true"></div>
+
+      <div class="grove__tree" aria-hidden="true">
+        <div class="tree__shadow"></div>
+        <div class="tree__trunk"></div>
+        <div class="tree__branch tree__branch--left"></div>
+        <div class="tree__branch tree__branch--right"></div>
+        <div class="tree__canopy"></div>
+        <div class="tree__fruit tree__fruit--one"></div>
+        <div class="tree__fruit tree__fruit--two"></div>
+        <div class="tree__fruit tree__fruit--three"></div>
+        <div class="tree__sparkles"></div>
+      </div>
+
+      <div class="grove__fireflies" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
