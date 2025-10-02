@@ -61,6 +61,7 @@ body {
   box-shadow: 0 30px 70px rgba(6, 10, 22, 0.55);
   isolation: isolate;
   perspective: 1200px;
+  z-index: 0;
 }
 
 .grove::before,
@@ -69,6 +70,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 0;
 }
 
 .grove::before {
@@ -94,16 +96,13 @@ body {
   transition: opacity 0.4s ease;
 }
 
-.grove__sky,
-.grove__ground {
+.grove__sky {
   position: absolute;
   inset: 0;
-}
-
-.grove__sky {
   background: linear-gradient(180deg, rgba(104, 158, 231, 0.35), transparent 45%),
     radial-gradient(circle at top right, rgba(255, 206, 143, 0.55), transparent 55%),
     radial-gradient(circle at bottom, rgba(13, 26, 47, 0.8), rgba(6, 10, 22, 0.9));
+  z-index: 1;
 }
 
 .grove__sun {
@@ -113,7 +112,7 @@ body {
   top: clamp(2rem, 4vw, 4rem);
   right: clamp(1.5rem, 3vw, 4rem);
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ffeeba, rgba(255, 168, 105, 0.95), rgba(255, 255, 255, 0));
+  background: radial-gradient(circle at 50% 50%, #ffeeba, rgba(255, 168, 105, 0.95), rgba(255, 255, 255, 0));
   filter: blur(1px);
   box-shadow: 0 0 45px rgba(255, 232, 175, 0.75);
   transform: translate3d(
@@ -187,11 +186,15 @@ body {
 }
 
 .grove__ground {
+  position: absolute;
+  left: 0;
+  right: 0;
   height: 45%;
   bottom: 0;
   background: radial-gradient(circle at calc(50% + var(--tree-shift-x)) 0%, rgba(69, 128, 92, 0.6), transparent 65%),
     linear-gradient(180deg, rgba(21, 39, 32, 0.8), rgba(14, 26, 22, 0.95));
   transform: translateY(10%);
+  z-index: 2;
 }
 
 .grove__tree {
@@ -206,6 +209,7 @@ body {
   transform-style: preserve-3d;
   transition: transform 0.4s ease;
   will-change: transform;
+  z-index: 3;
 }
 
 .tree__shadow {
@@ -341,6 +345,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 4;
 }
 
 .grove__fireflies span {
