@@ -12,6 +12,9 @@ const setProperties = ({
   tiltX = 0,
   tiltY = 0,
   cloudShift = 0,
+  treeShiftX = 0,
+  treeShiftY = 0,
+  glow = 0.45,
 } = {}) => {
   root.style.setProperty("--pointer-x", xPercent.toFixed(2));
   root.style.setProperty("--pointer-y", yPercent.toFixed(2));
@@ -19,6 +22,9 @@ const setProperties = ({
   root.style.setProperty("--tree-tilt-x", `${tiltX.toFixed(2)}deg`);
   root.style.setProperty("--tree-tilt-y", `${tiltY.toFixed(2)}deg`);
   root.style.setProperty("--cloud-shift", `${cloudShift.toFixed(2)}px`);
+  root.style.setProperty("--tree-shift-x", `${treeShiftX.toFixed(2)}px`);
+  root.style.setProperty("--tree-shift-y", `${treeShiftY.toFixed(2)}px`);
+  root.style.setProperty("--tree-glow", glow.toFixed(3));
 };
 
 const defaultProps = {
@@ -28,6 +34,9 @@ const defaultProps = {
   tiltX: 0,
   tiltY: 0,
   cloudShift: 0,
+  treeShiftX: 0,
+  treeShiftY: 0,
+  glow: 0.45,
 };
 
 const updateFromPoint = (clientX, clientY) => {
@@ -44,6 +53,15 @@ const updateFromPoint = (clientX, clientY) => {
   const distanceX = clientX - treeCenterX;
   const distanceY = clientY - treeCenterY;
   const distance = Math.hypot(distanceX, distanceY);
+  const maxRadius = Math.max(sceneRect.width, sceneRect.height) * 0.9;
+  const strength = clamp(1 - distance / maxRadius, 0.15, 1);
+
+  const tiltX = (relativeX - 0.5) * 14;
+  const tiltY = (0.6 - relativeY) * 10;
+  const cloudShift = (relativeX - 0.5) * 60;
+  const treeShiftX = (relativeX - 0.5) * 32;
+  const treeShiftY = (0.55 - relativeY) * 26;
+  const glow = clamp(strength * 1.15, 0.25, 1.1);
   const maxRadius = Math.max(treeRect.width, treeRect.height) * 0.7;
   const strength = clamp(1 - distance / maxRadius, 0.1, 1);
 
@@ -58,6 +76,9 @@ const updateFromPoint = (clientX, clientY) => {
     tiltX,
     tiltY,
     cloudShift,
+    treeShiftX,
+    treeShiftY,
+    glow,
   });
 };
 
@@ -82,6 +103,7 @@ if (scene) {
     if (event.touches.length === 0) return;
     const touch = event.touches[0];
     updateFromPoint(touch.clientX, touch.clientY);
+  }, { passive: true });
   });
 
   scene.addEventListener("touchend", () => {
