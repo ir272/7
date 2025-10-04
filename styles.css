@@ -39,6 +39,17 @@ body {
   padding: clamp(1.5rem, 3vw, 3rem);
 }
 
+.grove__title {
+  margin: 0 0 clamp(1rem, 2vw, 1.75rem);
+  font-family: "Playfair Display", "Quicksand", system-ui, sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+  opacity: 0.9;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
